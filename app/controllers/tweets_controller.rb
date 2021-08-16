@@ -20,9 +20,11 @@ class TweetsController < ApplicationController
     end
 
     get '/tweets/new' do
-      redirect_if_not_logged_in
-
-      erb :'/tweets/new'
+      if logged_in?
+        erb :'/tweets/new'
+      else
+        redirect to '/login'
+      end
     end
 
     get '/tweets/:id' do
