@@ -57,17 +57,21 @@ class TweetsController < ApplicationController
     end
     
     patch '/tweets/:id' do
-      redirect_if_not_logged_in
-      redirect_if_not_authorized
-      @tweet = Tweet.find_by_id(params[:id])
-
-      if @tweet.update(content: params[:content])
-        redirect to "/tweets/#{@tweet.id}"
+      #redirect_if_not_logged_in
+      #redirect_if_not_authorized
+      if logged_in?
+        @tweet = Tweet.find_by_id(params[:id])
+        if @tweet.user_id == session[:user_id]
+          erb :'tweets/edit_tweet'
+        else
+          redirect to "/tweets"
+        end
       else
-        redirect to "/tweets/#{@tweets.id}/edit"
+        redirect to "/login"
       end
     end
 
+   
     delete '/tweets/:id/delete' do
       redirect_if_not_logged_in
       redirect_if_not_authorized

@@ -31,7 +31,7 @@ class UsersController < ApplicationController
     post '/login' do
       #redirect_if_logged_in
 
-      user = User.find_by(username: params[:user][:username])
+      user = User.find_by(:username => params[:user][:username])
 
       if user && user.authenticate(params[:user][:password])
         session[:user_id] = user.id 
@@ -42,6 +42,7 @@ class UsersController < ApplicationController
     end
 
     get '/logout' do
+      #binding.pry
       redirect_if_not_logged_in
       erb :'/users/logout'
     end
